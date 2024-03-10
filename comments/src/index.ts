@@ -1,5 +1,6 @@
 import { Elysia } from "elysia";
 import { randomBytes } from "crypto";
+import { cors } from "@elysiajs/cors";
 
 type Comments = {
     [postId: string]: [
@@ -13,6 +14,7 @@ type Comments = {
 const commentsByPostId: Comments = {};
 
 const app = new Elysia()
+    .use(cors())
     .get(
         "/post/:id/comments",
         ({ params }: { params: { id: string } }) =>
