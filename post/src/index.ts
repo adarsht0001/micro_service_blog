@@ -1,5 +1,6 @@
 import { Elysia } from "elysia";
 import { randomBytes } from "crypto";
+import { cors } from "@elysiajs/cors";
 
 type Post = {
     [id: string]: {
@@ -10,6 +11,7 @@ type Post = {
 const posts: Post = {};
 
 const app = new Elysia()
+    .use(cors())
     .get("/posts", () => posts)
     .post("/posts", ({ body }: { body: { title: string } }) => {
         const id = randomBytes(4).toString("hex");
