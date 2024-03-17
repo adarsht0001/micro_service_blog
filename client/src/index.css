@@ -79,3 +79,9 @@ input[type=text]:focus {
     gap: 8px;
     flex-wrap: wrap;
 }
+
+.comments {
+    display: block;
+    justify-content: start;
+    text-align: left;
+}

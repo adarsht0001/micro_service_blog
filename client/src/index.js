@@ -81,7 +81,11 @@ function PostView({ data }) {
             <div className="post-div">
                 <h2>{data.title}</h2>
                 {comments.map((comment) => {
-                    return <div key={comment.id}>{comment.content}</div>;
+                    return (
+                        <span className="comments" key={comment.id}>
+                            {comment.content}
+                        </span>
+                    );
                 })}
 
                 <div>
