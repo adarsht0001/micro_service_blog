@@ -49,7 +49,6 @@ func eventHandler(w http.ResponseWriter, r *http.Request) {
 			copyReader := bytes.NewReader(copyData)
 			err, res := http.Post(url, "application/json", copyReader)
 			if err != nil {
-				// handle error
 				fmt.Println("Error posting to", url, err)
 			}
 			fmt.Println(res)
