@@ -33,10 +33,26 @@ const app = new Elysia()
             const comments = commentsByPostId[params.id] || [];
             comments.push({ id: commentId, content: body.content });
             commentsByPostId[params.id] = comments;
+            fetch("http://localhost:4000/events", {
+                method: "POST",
+                body: JSON.stringify({
+                    type: "CommentCreated",
+                    data: {
+                        id: commentId,
+                        content: body.content,
+                        postId: params.id,
+                    },
+                }),
+                headers: { "Content-Type": "application/json" },
+            });
 
             return comments;
         }
     )
+    .post("/events", ({ body }) => {
+        console.log(body);
+        return;
+    })
     .listen(3001);
 
 console.log(

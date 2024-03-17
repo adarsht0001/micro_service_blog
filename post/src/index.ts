@@ -21,9 +21,24 @@ const app = new Elysia()
             id,
             title,
         };
+        fetch("http://localhost:4000/events", {
+            method: "POST",
+            body: JSON.stringify({
+                type: "PostCreated",
+                data: {
+                    id,
+                    title,
+                },
+            }),
+            headers: { "Content-Type": "application/json" },
+        });
         return posts[id];
     })
-    .listen(3000);
+    .post("/events", ({ body }) => {
+        console.log(body);
+        return;
+    })
+    .listen(3002);
 
 console.log(
     `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
