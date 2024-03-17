@@ -8,6 +8,7 @@ function App() {
     const [refetch, setRefetch] = useState(true);
     useEffect(() => {
         axios.get("http://localhost:3000/posts").then((res) => {
+            console.log(res.data);
             setPosts(res.data);
         });
     }, [refetch]);
@@ -18,7 +19,13 @@ function App() {
                 <CreatePost cb={() => setRefetch(!refetch)} />
                 <div className="post_wrapper">
                     {Object.values(posts).map((post) => {
-                        return <PostView key={post.id} data={post} />;
+                        return (
+                            <PostView
+                                key={post.id}
+                                data={post}
+                                cb={() => setRefetch(!refetch)}
+                            />
+                        );
                     })}
                 </div>
             </div>
@@ -30,7 +37,7 @@ function CreatePost({ cb }) {
     const [title, setTitle] = useState("");
     const handleSubmit = async () => {
         axios
-            .post("http://localhost:3000/posts", { title })
+            .post("http://localhost:3002/posts", { title })
             .then((res) => {
                 alert("post created");
                 setTitle("");
@@ -55,32 +62,26 @@ function CreatePost({ cb }) {
     );
 }
 
-function PostView({ data }) {
-    const [comments, setComments] = useState([]);
-    const [content, setContent] = useState("");
+function PostView({ data, cb }) {
+    const [comment, setComment] = useState("");
     const handleSubmit = async () => {
         axios
             .post(`http://localhost:3001/post/${data.id}/comments`, {
-                content,
+                content: comment,
             })
             .then((res) => {
                 alert("comment created");
-                setContent("");
+                setComment("");
+                cb();
             })
             .catch((err) => console.log(err));
     };
-    useEffect(() => {
-        axios
-            .get(`http://localhost:3001/post/${data.id}/comments`)
-            .then((res) => {
-                setComments(res.data);
-            });
-    }, []);
+
     return (
         <>
             <div className="post-div">
                 <h2>{data.title}</h2>
-                {comments.map((comment) => {
+                {data.comments.map((comment) => {
                     return (
                         <span className="comments" key={comment.id}>
                             {comment.content}
@@ -92,8 +93,8 @@ function PostView({ data }) {
                     <input
                         type="text"
                         required
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
                     />
                     <button className="button" onClick={handleSubmit}>
                         Add comment
