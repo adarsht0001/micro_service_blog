@@ -41,12 +41,19 @@ func eventHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		reader := bytes.NewReader(eventJSON)
+		services := []string{"http://localhost:3000/events", "http://localhost:3001/events", "http://localhost:3002/events"}
 
-		http.Post("http://localhost:3000/events", "application/json", reader) //post service
-		http.Post("http://localhost:3001/events", "application/json", reader) //comment service
-		http.Post("http://localhost:3002/events", "application/json", reader) //query service
-
+		for _, url := range services {
+			copyData := make([]byte, len(eventJSON))
+			copy(copyData, eventJSON)
+			copyReader := bytes.NewReader(copyData)
+			err, res := http.Post(url, "application/json", copyReader)
+			if err != nil {
+				// handle error
+				fmt.Println("Error posting to", url, err)
+			}
+			fmt.Println(res)
+		}
 	}
 
 }
