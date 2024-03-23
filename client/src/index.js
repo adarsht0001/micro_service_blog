@@ -81,13 +81,15 @@ function PostView({ data, cb }) {
         <>
             <div className="post-div">
                 <h2>{data.title}</h2>
-                {data.comments.map((comment) => {
-                    return (
-                        <span className="comments" key={comment.id}>
-                            {comment.content}
-                        </span>
-                    );
-                })}
+                <ul>
+                    {data.comments.map((comment) => {
+                        return (
+                            <li style={{ textAlign: "left" }} key={comment.id}>
+                                {comment.content}
+                            </li>
+                        );
+                    })}
+                </ul>
 
                 <div>
                     <input

@@ -10,7 +10,6 @@ input[type=text] {
     border: 2px solid #aaa;
     border-radius: 4px;
     margin: 8px 0;
-    outline: none;
     padding: 8px;
     box-sizing: border-box;
     transition: .3s;
@@ -23,7 +22,7 @@ input[type=text]:focus {
 
 .button {
     background-color: #0095ff;
-    border: 1px solid transparent;
+    border: none;
     border-radius: 3px;
     box-shadow: rgba(255, 255, 255, .4) 0 1px 0 0 inset;
     box-sizing: border-box;
@@ -78,10 +77,4 @@ input[type=text]:focus {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
-}
-
-.comments {
-    display: block;
-    justify-content: start;
-    text-align: left;
 }
