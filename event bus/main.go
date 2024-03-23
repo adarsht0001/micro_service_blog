@@ -22,6 +22,8 @@ type Event struct {
 	}
 }
 
+var eventHistory []Event
+
 func eventHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -41,6 +43,8 @@ func eventHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		eventHistory = append(eventHistory, event)
+
 		services := []string{"http://localhost:3000/events", "http://localhost:3001/events", "http://localhost:3002/events"}
 
 		for _, url := range services {
@@ -53,6 +57,15 @@ func eventHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			fmt.Println(res)
 		}
+	}
+	if r.Method == "GET" {
+		eventJSON, err := json.Marshal(eventHistory)
+		if err != nil {
+			log.Println("Error decoding JSON:", err)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(eventJSON)
 	}
 
 }
