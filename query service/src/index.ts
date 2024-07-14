@@ -23,13 +23,18 @@ function eventHandler(type: EventData["Type"], data: EventData["Data"]) {
 }
 
 (async function getAllEvents(): Promise<void> {
-  const res = await fetch("http://localhost:4000/events");
-  const data: [EventData] = await res.json();
+  fetch("http://localhost:4000/events")
+    .then(async (res) => {
+      const data: [EventData] = await res.json();
 
-  data.forEach((event) => {
-    const { Data, Type } = event;
-    eventHandler(Type, Data);
-  });
+      data.forEach((event) => {
+        const { Data, Type } = event;
+        eventHandler(Type, Data);
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 })();
 
 app.get("/posts", (c) => {
