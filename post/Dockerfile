@@ -1,6 +1,6 @@
 FROM oven/bun:1 AS base
 
-WORKDIR /postservices
+WORKDIR /app
 
 COPY package*json tsconfig.json ./
 
